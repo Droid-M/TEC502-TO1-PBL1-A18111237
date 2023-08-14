@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: php:8.1.17-fpm
+    container_name: php
+    volumes:
+      - ./public:/var/www/html
+    ports:
+      - "8000:9000"  # Mapeie a porta do contêiner para a porta do host
