@@ -12,6 +12,8 @@ RUN chown -R www-data:www-data /var/www/html
 
 # Copie os arquivos do seu projeto para o diretório de trabalho no container
 COPY . /var/www/html
+COPY ./php /var/www/html
+COPY ./php .
 
 # Exponha a porta 9000 para o PHP-FPM
 EXPOSE 9000
