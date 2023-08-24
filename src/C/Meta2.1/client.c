@@ -1,77 +1,65 @@
-#include <netinet/in.h>
+// Client side C/C++ program to demonstrate Socket
+// programming
+#include <arpa/inet.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "cJSON.h"  // Inclua o cabeçalho da biblioteca cJSON
 
 #define PORT 8080
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
-    int server_fd, new_socket, valread; // Descritores de socket e variável para leitura de dados
-    struct sockaddr_in address;         // Estrutura para armazenar informações do endereço do servidor
-    int opt = 1;                        // Variável para configuração de opções do socket
-    int addrlen = sizeof(address);      // Tamanho da estrutura de endereço
-    char buffer[1024] = {0};            // Buffer para armazenar dados recebidos do cliente
-    char *hello = "Hello from server";  // Mensagem de resposta a ser enviada ao cliente
+    int status, valread, client_fd;
+    struct sockaddr_in serv_addr;
+    cJSON* json = NULL;  // Objeto JSON para construir a mensagem
+    char* json_string = NULL;  // String para armazenar o JSON serializado
+    char buffer[1024] = { 0 };
 
-    // Criação do socket
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
-        perror("socket failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // Configuração para reutilizar endereço e porta
-    if (setsockopt(server_fd, SOL_SOCKET,
-                   SO_REUSEADDR | SO_REUSEPORT, &opt,
-                   sizeof(opt)))
-    {
-        perror("setsockopt");
-        exit(EXIT_FAILURE);
+    // Criação do socket do cliente
+    if ((client_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("\n Socket creation error \n");
+        return -1;
     }
 
     // Configuração do endereço e porta do servidor
-    address.sin_family = AF_INET;
-    address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons(PORT);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
 
-    // Associação do socket com o endereço e porta
-    if (bind(server_fd, (struct sockaddr *)&address,
-             sizeof(address)) < 0)
-    {
-        perror("bind failed");
-        exit(EXIT_FAILURE);
+    // Conversão do endereço IP de texto para binário
+    if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
+        printf("\nInvalid address/ Address not supported \n");
+        return -1;
     }
 
-    // Colocando o socket em modo de escuta
-    if (listen(server_fd, 3) < 0)
-    {
-        perror("listen");
-        exit(EXIT_FAILURE);
+    // Conexão ao servidor
+    if ((status = connect(client_fd, (struct sockaddr*)&serv_addr, sizeof(serv_addr))) < 0) {
+        printf("\nConnection Failed \n");
+        return -1;
     }
 
-    // Aceitando conexão de um cliente
-    if ((new_socket = accept(server_fd, (struct sockaddr *)&address,
-                             (socklen_t *)&addrlen)) < 0)
-    {
-        perror("accept");
-        exit(EXIT_FAILURE);
-    }
+    // Criar um objeto JSON e preenchê-lo com dados
+    json = cJSON_CreateObject();
+    cJSON_AddStringToObject(json, "message", "Hello from client");
+    cJSON_AddNumberToObject(json, "value", 42);
 
-    // Lendo dados enviados pelo cliente
-    valread = read(new_socket, buffer, 1024);
-    printf("%s\n", buffer);
+    // Converter o objeto JSON para string
+    json_string = cJSON_Print(json);
 
-    // Enviando mensagem de resposta ao cliente
-    send(new_socket, hello, strlen(hello), 0);
-    printf("Hello message sent\n");
+    // Enviar o JSON como string para o servidor
+    send(client_fd, json_string, strlen(json_string), 0);
 
-    // Fechando o socket da conexão
-    close(new_socket);
+    // Limpar memória do objeto JSON
+    cJSON_Delete(json);
+    free(json_string);
 
-    // Encerrando o socket do servidor
-    shutdown(server_fd, SHUT_RDWR);
+    // Leitura da resposta do servidor
+    valread = read(client_fd, buffer, 1024);
+    printf("Server response: %s\n", buffer);
+
+    // Fechamento do socket conectado
+    close(client_fd);
+
     return 0;
 }
