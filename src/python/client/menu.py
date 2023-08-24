@@ -3,6 +3,10 @@ from cashier import menu as cashier_menu
 from shop_admin import menu as shop_admin_menu
 
 def main():
+    data = {
+        'enabled_cashier' : False
+    }
+
     can_scroll_console = False
     while True:
         if can_scroll_console:
@@ -16,9 +20,11 @@ def main():
         option = input("Digite o número da opção desejada: ")
 
         if option == '1':
-            cashier_menu.main()
+            # menu.scroll_conso2le()
+            cashier_menu.main(data)
         elif option == '2':
-            shop_admin_menu.main()
+            menu.scroll_console()
+            shop_admin_menu.main(data)
         elif option == '3':
             can_scroll_console = False
             menu.clear_console()

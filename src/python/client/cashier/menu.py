@@ -1,31 +1,16 @@
 from helpers import menu
 
-def main():
+def main(data):
     can_scroll_console = False
+    checkoutStatus = None
     while True:
         if can_scroll_console:
             menu.scroll_console()
-        print("Menu:")
-        print("1 - Caixa")
-        print("2 - Administrator")
-        print("3 - Limpar console")
-        print("4 - Sair")
-
-        option = input("Digite o número da opção desejada: ")
-
-        if option == '1':
-            ler_contatos()
-        elif option == '2':
-            adicionar_contato()
-        elif option == '3':
-            can_scroll_console = False
-            clear_console()
-        elif option == '4':
-            sair()
-        else:
-            print("Opção inválida. Por favor, escolha uma opção válida.")
+        print("Menu do caixa:")
         
+        if checkoutStatus == None:
+            print('1 - Escanear produtos')
+            checkoutStatus = 'SCANNING_PRODUCTS'
+        elif checkoutStatus == 'SCANNING_PRODUCTS':
+            
         can_scroll_console = True
-
-if __name__ == "__main__":
-    main()
