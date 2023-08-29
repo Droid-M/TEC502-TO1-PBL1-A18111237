@@ -1,12 +1,14 @@
 import socket
-import rfid_library  # Substitua pelo nome correto da biblioteca do seu sensor RFID
+import mercury
 
 # Configurações do servidor
-HOST = 'seu_endereco_ip_da_raspberry'  # Substitua pelo IP da Raspberry Pi
-PORT = 12345  # Porta para comunicação
+HOST = '172.16.103.0'  # Substitua pelo IP da Raspberry Pi
+PORT = 22  # Porta para comunicação
 
 # Inicializar o sensor RFID
-rfid_sensor = rfid_library.RFID()  # Substitua pelo código correto de inicialização do seu sensor
+sensor = mercury.Reader("tmr:///dev/ttyUSB0")
+sensor.set_region("NA2")
+sensor.set_read_plan([1], "GEN2", read_power=2300)
 
 # Inicializar o servidor
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,9 +26,11 @@ try:
         # Ler sinal do cliente
         signal = client_socket.recv(1024).decode()
 
+        print(signal)
+
         if signal == "READ_SENSORS":
             # Ler etiquetas do sensor RFID
-            detected_tags = rfid_sensor.read_tags()  # Substitua pelo código correto para ler as etiquetas
+            detected_tags = map(lambda tag: tag, sensor.read())
 
             # Enviar dados para o cliente
             data_to_send = ",".join(detected_tags) if detected_tags else "Nenhum dado lido"
@@ -39,4 +43,3 @@ try:
 finally:
     # Encerrar conexões e limpar recursos
     server_socket.close()
-    rfid_sensor.close()  # Substitua pelo código correto para encerrar o sensor RFID
