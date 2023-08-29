@@ -20,7 +20,7 @@ def main():
         option = input("Digite o número da opção desejada: ")
 
         if option == '1':
-            # menu.scroll_conso2le()
+            # menu.scroll_console()
             cashier_menu.main(data)
         elif option == '2':
             menu.scroll_console()

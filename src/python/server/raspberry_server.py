@@ -1,5 +1,6 @@
 import socket
 import mercury
+import os
 
 # Configurações do servidor
 HOST = '172.16.103.0'  # Substitua pelo IP da Raspberry Pi
@@ -18,7 +19,7 @@ server_socket.listen(5)  # Pode ajustar o número máximo de conexões pendentes
 print("Aguardando conexões de clientes...")
 
 try:
-    while True:
+    while not os.path.exists("close_raspberry_server.txt"):
         # Aguardar conexão de um cliente
         client_socket, client_address = server_socket.accept()
         print("Conexão estabelecida com", client_address)
