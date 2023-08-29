@@ -11,6 +11,6 @@ def main(data):
         if checkoutStatus == None:
             print('1 - Escanear produtos')
             checkoutStatus = 'SCANNING_PRODUCTS'
-        elif checkoutStatus == 'SCANNING_PRODUCTS':
+        # elif checkoutStatus == 'SCANNING_PRODUCTS':
             
         can_scroll_console = True
