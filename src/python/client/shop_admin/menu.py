@@ -7,7 +7,7 @@ from shop_admin import ssh_open_connection as ssh
 local_script_path = path = Path(__file__).parent.parent.parent.__str__() + '\\server\\raspberry_server.py'
 
 # Caminho remoto na Raspberry Pi onde o script será copiado
-remote_script_path = 'TP01/MarcOs/raspberry_server.py'
+remote_script_path = 'TP01/MarcOs/server.py'
 
 if file.env("ENV") != "SIMULATION":
     def deploy_raspberry_server():
@@ -19,7 +19,7 @@ if file.env("ENV") != "SIMULATION":
         print("Arquivo do script copiado para a Raspberry Pi!")
 
         # Executando remotamente o comando para executar o script do servidor na Raspberry Pi
-        stdin, stdout, stderr = ssh.ssh_client.exec_command(f'python3 {remote_script_path} &')
+        # stdin, stdout, stderr = ssh.ssh_client.exec_command(f'python3 {remote_script_path} &')
         print("Script do servidor iniciado na Raspberry Pi.")
 else:
     def deploy_raspberry_server():
@@ -60,6 +60,6 @@ def main(data):
             data['enabled_cashier'] = enable_cashier()
         else:
             print("Opção inválida. Por favor, escolha uma opção válida.")
-        else 
+        # else 
         
         canScrollConsole = True

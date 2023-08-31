@@ -1,4 +1,5 @@
 import socket
+import ast
 
 # Configurações do cliente
 HOST = '172.16.103.0'  #IP da Raspberry PI
@@ -18,7 +19,8 @@ def receive_data():
         # Receber dados da Raspberry Pi
         data_received = client_socket.recv(1024).decode()
         print(data_received)
-        print(len(data_received))
+        data_received = list(ast.literal_eval(data_received))
+        print(type(data_received))
     finally:
         # Encerrar a conexão
         client_socket.close()

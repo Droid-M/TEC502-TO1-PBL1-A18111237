@@ -4,7 +4,7 @@ import os
 
 # Configurações do servidor
 HOST = '172.16.103.0'  # Substitua pelo IP da Raspberry Pi
-PORT = 22  # Porta para comunicação
+PORT = 9000  # Porta para comunicação
 
 # Inicializar o sensor RFID
 sensor = mercury.Reader("tmr:///dev/ttyUSB0")
@@ -31,10 +31,10 @@ try:
 
         if signal == "READ_SENSORS":
             # Ler etiquetas do sensor RFID
-            detected_tags = map(lambda tag: tag, sensor.read())
-
+            detected_tags = list(map(lambda tag: tag.epc, sensor.read()))
+            detected_tags = map(str, detected_tags)
             # Enviar dados para o cliente
-            data_to_send = ",".join(detected_tags) if detected_tags else "Nenhum dado lido"
+            data_to_send = " ".join(detected_tags) if detected_tags else "Nenhum dado lido"
             client_socket.send(data_to_send.encode())
             print("Dados enviados:", data_to_send)
 
