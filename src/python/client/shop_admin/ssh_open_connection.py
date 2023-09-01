@@ -2,9 +2,13 @@ import paramiko
 from helpers import file
 
 # Configurações da conexão SSH
-raspberry_ip = '172.16.103.0'
-raspberry_username = 'tec502'
-raspberry_password = 'larsid'
+raspberry_ip = file.env("RASPBERRY_IP")
+raspberry_username = file.env("RASPBERRY_USERNAME")
+raspberry_password = file.env("RASPBERRY_PASSWORD")
+
+print(raspberry_ip)
+print(raspberry_username)
+print(raspberry_password)
 
 ssh_client = paramiko.SSHClient()
 

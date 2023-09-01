@@ -24,3 +24,5 @@ def receive_data():
         # Encerrar a conexão
         client_socket.close()
         return data_received
+    
+print(receive_data())

@@ -1,15 +1,19 @@
 import socket
-import mercury
 import os
 
-# Configurações do servidor
-HOST = '172.16.103.0'  # Substitua pelo IP da Raspberry Pi
-PORT = 9000  # Porta para comunicação
+def env(key):
+    with open("server.env", "r") as env_file:
+        env_vars = env_file.readlines()
 
-# Inicializar o sensor RFID
-sensor = mercury.Reader("tmr:///dev/ttyUSB0")
-sensor.set_region("NA2")
-sensor.set_read_plan([1], "GEN2", read_power=2300)
+    # Percorre as variáveis de ambiente e procura pela variável "ENV"
+    for env_var in env_vars:
+        if env_var.startswith(f'{key}='):
+            return env_var.split("=")[1].strip().strip('"')
+    return ''
+
+# Configurações do servidor
+HOST = env("RASPBERRY_IP")  # Substitua pelo IP da Raspberry Pi
+PORT = int(env("RASPBERRY_PORT"))  # Porta para comunicação
 
 # Inicializar o servidor
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -30,11 +34,8 @@ try:
         print(signal)
 
         if signal == "READ_SENSORS":
-            # Ler etiquetas do sensor RFID
-            detected_tags = map(lambda tag: tag, sensor.read())
-
             # Enviar dados para o cliente
-            data_to_send = ",".join(detected_tags) if detected_tags else "Nenhum dado lido"
+            data_to_send = "[b'E2002047381502180820C296', b'0000000000000000C0002403']"
             client_socket.send(data_to_send.encode())
             print("Dados enviados:", data_to_send)
 

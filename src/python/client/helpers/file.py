@@ -8,4 +8,4 @@ def env(key):
     for env_var in env_vars:
         if env_var.startswith(f'{key}='):
             return env_var.split("=")[1].strip().strip('"')
-    return None
+    return ''
