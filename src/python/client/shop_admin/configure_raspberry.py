@@ -29,6 +29,8 @@ if file.env("ENV") != "SIMULATION":
 
         # Executando remotamente o comando para executar o script do servidor na Raspberry Pi
         # stdin, stdout, stderr = ssh.ssh_client.exec_command(f'python3 {remote_script_path} &')
+        # for line in iter(stdout.readline, ""):
+        #     print(line, end="")
         # print("Script do servidor iniciado na Raspberry Pi.")
 else:
     def deploy_raspberry_server():

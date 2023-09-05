@@ -18,9 +18,9 @@ def receive_data():
         client_socket.send("READ_SENSORS".encode())
         
         # Receber dados da Raspberry Pi
-        data_received = client_socket.recv(1024).decode()
-        data_received = list(ast.literal_eval(data_received))
-        print(type(data_received))
+        data_received = client_socket.recv(1024).decode().split(',')
+    except Exception as e:
+        print(e)
     finally:
         # Encerrar a conexão
         client_socket.close()
