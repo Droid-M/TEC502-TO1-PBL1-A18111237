@@ -4,7 +4,7 @@ from helpers import file
 
 # Configurações do cliente
 HOST = file.env("RASPBERRY_IP")  #IP da Raspberry PI
-PORT = int(file.env("RASPBERRY_PORT"))  # Porta para comunicação
+PORT = int(file.env("RASPBERRY_SOCKET_PORT"))  # Porta para comunicação
 
 def receive_data():
     # Inicializar o cliente
@@ -20,9 +20,10 @@ def receive_data():
         # Receber dados da Raspberry Pi
         data_received = client_socket.recv(1024).decode()
         data_received = list(ast.literal_eval(data_received))
+        print(type(data_received))
     finally:
         # Encerrar a conexão
         client_socket.close()
         return data_received
     
-print(receive_data())
+receive_data()

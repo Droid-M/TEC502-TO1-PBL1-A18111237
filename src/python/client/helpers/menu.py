@@ -7,6 +7,6 @@ def sair():
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def scroll_console():
-    for _ in range(10):
+def scroll_console(lines = 10):
+    for _ in range(lines):
         print()

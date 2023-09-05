@@ -20,6 +20,7 @@ print("Aguardando conexões de clientes...")
 
 try:
     while not os.path.exists("close_raspberry_server.txt"):
+        print("...")
         # Aguardar conexão de um cliente
         client_socket, client_address = server_socket.accept()
         print("Conexão estabelecida com", client_address)
@@ -31,8 +32,7 @@ try:
 
         if signal == "READ_SENSORS":
             # Ler etiquetas do sensor RFID
-            detected_tags = map(lambda tag: tag, sensor.read())
-
+            detected_tags = list(map(lambda tag: tag.epc.decode('UTF-8'), sensor.read()))
             # Enviar dados para o cliente
             data_to_send = ",".join(detected_tags) if detected_tags else "Nenhum dado lido"
             client_socket.send(data_to_send.encode())
