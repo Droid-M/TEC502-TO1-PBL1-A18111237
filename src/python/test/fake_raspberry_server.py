@@ -13,17 +13,18 @@ def env(key):
 
 # Configurações do servidor
 HOST = env("RASPBERRY_IP")  # Substitua pelo IP da Raspberry Pi
-PORT = int(env("RASPBERRY_PORT"))  # Porta para comunicação
+PORT = int(env("RASPBERRY_SOCKET_PORT"))  # Porta para comunicação
 
 # Inicializar o servidor
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind((HOST, PORT))
 server_socket.listen(5)  # Pode ajustar o número máximo de conexões pendentes
+signal = None
 
 print("Aguardando conexões de clientes...")
 
 try:
-    while not os.path.exists("close_raspberry_server.txt"):
+    while not os.path.exists("close_raspberry_server.txt") and signal != "STOP_SERVER":
         # Aguardar conexão de um cliente
         client_socket, client_address = server_socket.accept()
         print("Conexão estabelecida com", client_address)

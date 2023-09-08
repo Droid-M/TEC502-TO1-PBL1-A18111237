@@ -10,3 +10,6 @@ def clear_console():
 def scroll_console(lines = 10):
     for _ in range(lines):
         print()
+
+def pause():
+    return input("Pressione Enter para continuar...")

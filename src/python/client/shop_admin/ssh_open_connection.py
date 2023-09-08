@@ -6,10 +6,6 @@ raspberry_ip = file.env("RASPBERRY_IP")
 raspberry_username = file.env("RASPBERRY_USERNAME")
 raspberry_password = file.env("RASPBERRY_PASSWORD")
 
-print(raspberry_ip)
-print(raspberry_username)
-print(raspberry_password)
-
 ssh_client = paramiko.SSHClient()
 
 if file.env("ENV") != "SIMULATION":

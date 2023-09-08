@@ -8,12 +8,13 @@ def main(data):
         print("Menu do administrador:")
         print("1 - Retornar")
         if not data['enabled_cashier']:
-            print("2 - Habilitar caixa")
+            print("2 - Preparar sistema")
         else:
             print("3 - Consultar informações sobre caixas")
-            print("4 - Bloquear/Liberar caixa")
-            print("5 - Consultar histórico de compras")
-            print("6 - Acompanhar compras")
+            print("4 - Bloquear caixa")
+            print("5 - Liberar caixa")
+            print("6 - Consultar histórico de compras")
+            print("7 - Acompanhar compras")
 
         option = input("Digite o número da opção desejada: ")
 
@@ -22,18 +23,25 @@ def main(data):
         else:
             if not data['enabled_cashier']:
                 if option == '2':
-                    data['enabled_cashier'] = manager.enable_cashier()
+                    data['enabled_cashier'] = manager.prepare_system()
+                    menu.pause()
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
             else:
                 if option == '3':
                     manager.show_cashiers_info()
+                    menu.pause()
                 elif option == '4':
-                    manager.block_cashier()
+                    manager.block_cashiers()
+                    menu.pause()
                 elif option == '5':
-                    manager.show_purchases_history()
+                    manager.unblock_cashiers()
+                    menu.pause()
                 elif option == '6':
+                    manager.show_purchases_history()
+                    menu.pause()
+                elif option == '7':
                     manager.track_purchases()
+                    menu.pause()
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
-        input("Pressione Enter para continuar...")

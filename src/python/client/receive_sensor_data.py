@@ -13,17 +13,16 @@ def receive_data():
     data_received = None
     print("Conexão estabelecida com a Raspberry Pi")
 
+    data_to_send = "READ_SENSORS"
     try:
-        # Enviar sinal para a Raspberry Pi ler os sensores
-        client_socket.send("READ_SENSORS".encode())
-        
-        # Receber dados da Raspberry Pi
-        data_received = client_socket.recv(1024).decode().split(',')
+        sent_bytes = client_socket.send(data_to_send.encode())
+        if sent_bytes == len(data_to_send):
+            # Receber dados da Raspberry Pi
+            data_received = client_socket.recv(1024).decode()
+            data_received = data_received.split(',') if data_received else None
     except Exception as e:
         print(e)
     finally:
         # Encerrar a conexão
         client_socket.close()
         return data_received
-    
-receive_data()
