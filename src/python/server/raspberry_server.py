@@ -27,13 +27,17 @@ environment = env('ENV')
 
 if environment == "SIMULATION" or environment == 'TEST':
     def read_tags():
-        etiquetas = []
-        n = random.randint(1, 10)
-        for _ in range(n):
-            # Gere etiquetas aleatórias (exemplo)
-            etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
-            etiquetas.append(etiqueta)
-        return etiquetas
+        # etiquetas = []
+        # n = random.randint(1, 10)
+        # for _ in range(n):
+        #     # Gere etiquetas aleatórias (exemplo)
+        #     etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
+        #     etiquetas.append(etiqueta)
+        # return etiquetas
+        etiquetas = ['123456789']
+        num_itens = random.randint(0, len(etiquetas))
+        # Retorne os primeiros 'num_itens' itens da lista
+        return etiquetas[:num_itens]
 else:
     # Inicializar o sensor RFID
     sensor = mercury.Reader("tmr:///dev/ttyUSB0")
