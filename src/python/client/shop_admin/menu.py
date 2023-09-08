@@ -23,7 +23,8 @@ def main(data):
         else:
             if not data['enabled_cashier']:
                 if option == '2':
-                    data['enabled_cashier'] = manager.prepare_system()
+                    manager.prepare_system()
+                    data['enabled_cashier'] = True
                     menu.pause()
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
