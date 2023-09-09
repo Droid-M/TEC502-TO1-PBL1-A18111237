@@ -58,14 +58,22 @@ def main(data):
                 print("Houve um problema com os dados escaneados! Por favor, refaça a leitura.")
                 # data['checkout_status'] = None
             menu.pause()
-        elif option == '3' and data['checkout_status'] == 'SCANNED_PRODUCTS':
+        elif (option == '3' or option == '4') and data['checkout_status'] == 'SCANNED_PRODUCTS':
             if isinstance(data['purchase'], dict) and len(data['purchase']) > 0:
-                if manager.pay_purchase(data['purchase'].get('id')):
-                    data['bar_codes'] = None
-                    data['purchase'] = None
-                    data['checkout_status'] = None
+                if option == '3':
+                    if manager.pay_purchase(data['purchase'].get('id')):
+                        data['bar_codes'] = None
+                        data['purchase'] = None
+                        data['checkout_status'] = None
+                    else:
+                        print('Falha ao pagar a compra!')
                 else:
-                    print('Falha ao pagar a compra!')
+                    if manager.cancel_purchase(data['purchase'].get('id')):
+                        data['bar_codes'] = None
+                        data['purchase'] = None
+                        data['checkout_status'] = None
+                    else:
+                        print('Falha ao cancelar a compra!')
             else:
                 print("Houve um problema com os dados da compra! Por favor, valide novamente a compra!")
                 data['checkout_status'] = 'SCANNING_PRODUCTS'

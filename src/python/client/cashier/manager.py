@@ -29,7 +29,9 @@ def register_purchase(bar_codes):
         r.render_response_message(response)
         if r.is_success(response):
             print("Compra processada: ")
-            return menu.render_purchase(response.json().get('data'))
+            purchase = response.json().get('data')
+            menu.render_purchase(purchase)
+            return purchase
         return None
     else:
         print("Compra cancelada!")
@@ -37,3 +39,6 @@ def register_purchase(bar_codes):
 
 def pay_purchase(purchase_id):
     return True
+
+def cancel_purchase(purchase_id):
+    return
