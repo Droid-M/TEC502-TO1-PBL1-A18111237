@@ -77,18 +77,22 @@ def register_product():
     if bar_codes is None:
         print("Nenhum produto foi escaneado!")
     else:
-        for bar_code in bar_codes:
-            product = {}
-            print(f"Cadastro de informações para o código de barras #{bar_code}")
-            product['name'] = input('\tInsira o nome do produto: ')
-            product['price'] = ipt.input_number('\tInsira o preço do produto: ')
-            product['stock_quantity'] = ipt.input_integer('\tInsira a quantidade em estoque: ')
-            product['bar_code'] = bar_code
-            products.append(product)
-        response = r.post('products/new', HEADERS, {'products': products})
-        r.render_response_message(response)
-        if r.is_success(response):
-            menu.render_products(response.json().get('data'))
+        print("Códigos de barra escaneados: ", bar_codes)
+        if input("Para prosseguir com o processo de cadastro de produtos insira 'Y': ").upper() == 'Y':
+            for bar_code in bar_codes:
+                product = {}
+                print(f"Cadastro de informações para o código de barras #{bar_code}")
+                product['name'] = input('\tInsira o nome do produto: ')
+                product['price'] = ipt.input_number('\tInsira o preço do produto: ')
+                product['stock_quantity'] = ipt.input_integer('\tInsira a quantidade em estoque: ')
+                product['bar_code'] = bar_code
+                products.append(product)
+            response = r.post('products/new', HEADERS, {'products': products})
+            r.render_response_message(response)
+            if r.is_success(response):
+                menu.render_products(response.json().get('data'))
+        else:
+            print('Cadastro de produtos cancelado!')
 
 def edit_product_details():
     details = {}

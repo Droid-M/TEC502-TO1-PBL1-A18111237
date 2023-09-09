@@ -1,6 +1,9 @@
 import os
-import datetime
+import sys
+import subprocess
 import locale
+import pytz
+from datetime import datetime
 
 try:
     locale.setlocale(locale.LC_ALL, 'portuguese_brazil')
@@ -21,8 +24,22 @@ TRANSLATED_PURCHASE_STATUS = {
     None: '(Nenhum status definido para a compra)'
 }
 
-def sair():
-    print("Saindo do programa.")
+def to_brazil_time(database_value):
+    try:
+        dt = datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S')
+        brasilia_timezone = pytz.timezone('America/Sao_Paulo')
+        return pytz.utc.localize(dt).astimezone(brasilia_timezone)
+    except ValueError:
+        return datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
+
+def restart():
+    print("Reiniciando programa...")
+    command = [sys.executable] + sys.argv
+    subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_CONSOLE)
+    sys.exit()
+
+def close():
+    print("Saindo do programa...")
     exit()
 
 def clear_console():
@@ -44,9 +61,7 @@ def render_product(product):
     print(f"\tQuantidade em estoque: {product['stock_quantity']}")
     print(f"\tCódigo: {product['bar_code']}")
     print(f"\tPreço: {float_to_currency(product['price'])}")
-    created_at = product['created_at']
-    created_at = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
-    print(f"\tCadastrado em: {created_at}")
+    print(f"\tCadastrado em: {to_brazil_time(product['created_at'])}")
     scroll_console(2)
 
 def render_products(products):
@@ -62,9 +77,7 @@ def render_purchase(purchase):
     print(f"\tForma de pagamento: {TRANSLATED_PAYMENT_METHODS[purchase['payment_method']]}")
     print(f"\tQuantidade de produtos: {len(purchase['products'])}")
     print(f"\tID do caixa que processou: {purchase['origin_cashier']}")
-    created_at = purchase['created_at']
-    created_at =datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
-    print(f"\tIniciada em: {created_at}")
+    print(f"\tIniciada em: {to_brazil_time(purchase['created_at'])}")
     scroll_console(2)
 
 def render_purchases(purchases):

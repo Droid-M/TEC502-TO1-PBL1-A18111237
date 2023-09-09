@@ -2,6 +2,7 @@ from helpers import file
 from pathlib import Path
 from shop_admin import ssh_open_connection as ssh
 import subprocess
+import os
 
 # Caminho local do script que será copiado para a Raspberry Pi
 local_script_path = path = Path(__file__).parent.parent.parent.__str__() + '\\' + file.env("LOCAL_RASPBERRY_SCRIPT_PATH")
@@ -24,7 +25,10 @@ if file.env("ENV") != "SIMULATION":
             sftp.putfo(local_file, remote_env_path)
         sftp.close()
         print("Arquivo do script copiado para a Raspberry Pi!")
-        subprocess.Popen(['python', Path(__file__).parent.parent.__str__() + '\\run_raspberry_server.py'], shell = True)
+        if os.name == 'nt':
+            subprocess.Popen(['start', 'python', Path(__file__).parent.parent.__str__() + '\\run_raspberry_server.py'], shell = True)
+        else:
+            subprocess.Popen(['python3', Path(__file__).parent.parent.__str__() + '\\run_raspberry_server.py'], shell = True)
 
 else:
     def deploy_raspberry_server():

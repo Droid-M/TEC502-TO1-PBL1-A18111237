@@ -24,7 +24,7 @@ def main():
             can_scroll_console = False
             menu.clear_console()
         elif option == '3':
-            menu.sair()
+            menu.close()
         else:
             print("Opção inválida. Por favor, escolha uma opção válida.")
         

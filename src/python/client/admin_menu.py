@@ -19,6 +19,7 @@ def main():
             print("1 - Administrator")
             print("2 - Limpar console")
             print("3 - Sair")
+            print("4 - Reiniciar")
 
             option = input("Digite o número da opção desejada: ")
 
@@ -29,14 +30,17 @@ def main():
                 can_scroll_console = False
                 menu.clear_console()
             elif option == '3':
-                menu.sair()
+                menu.close()
+            elif option == '4':
+                menu.restart()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")
             
             can_scroll_console = True
         except Exception as e:
-            raise e
+            # raise e
             print(f'Ops! Algo errado aconteceu: "{e}"')
+            print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
         finally:
             ssh.close_connection()
 
