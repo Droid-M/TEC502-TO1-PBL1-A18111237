@@ -53,7 +53,7 @@ def main(data):
                 if isinstance(data['purchase'], dict) and len(data['purchase']) > 0:
                     data['checkout_status'] = 'SCANNED_PRODUCTS'
                 else:
-                    print("Houve um problema com os dados da compra! Por favor, valide novamente a compra!")
+                    print("Não foi possível prosseguir com a compra!")
             else:
                 print("Houve um problema com os dados escaneados! Por favor, refaça a leitura.")
                 # data['checkout_status'] = None
@@ -75,7 +75,8 @@ def main(data):
                 data['checkout_status'] = 'SCANNING_PRODUCTS'
             menu.pause()
         elif option == '5':
-            check_status(data)
+            # check_status(data)~
+            continue;
         else:
             print("Opção inválida. Por favor, escolha uma opção válida.")
         
