@@ -65,15 +65,11 @@ def main(data):
                         data['bar_codes'] = None
                         data['purchase'] = None
                         data['checkout_status'] = None
-                    else:
-                        print('Falha ao pagar a compra!')
                 else:
                     if manager.cancel_purchase(data['purchase'].get('id')):
                         data['bar_codes'] = None
                         data['purchase'] = None
                         data['checkout_status'] = None
-                    else:
-                        print('Falha ao cancelar a compra!')
             else:
                 print("Houve um problema com os dados da compra! Por favor, valide novamente a compra!")
                 data['checkout_status'] = 'SCANNING_PRODUCTS'

@@ -41,4 +41,8 @@ def pay_purchase(purchase_id):
     return True
 
 def cancel_purchase(purchase_id):
-    return
+    if input("Para confirmar o cancelamento da compra, insira 'Y': ").upper() == 'Y':
+        response = r.post(f'purchases/{purchase_id}/cancel', HEADERS)
+        r.render_response_message(response)
+        return r.is_success(response)
+    return False

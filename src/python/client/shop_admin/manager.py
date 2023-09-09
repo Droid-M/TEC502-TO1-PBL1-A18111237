@@ -56,7 +56,7 @@ def track_purchases():
     print("\nO processo de monitoramento de compras será iniciado a seguir. Para interrompê-lo, pressione 'N' durante 2 segundos assim que o processo iniciar.\n\n")
     dialog_response = ''
     while dialog_response.upper() != 'Y':
-        dialog_response = input("Pressione 'Y' para confirmar que as instruções foram lidas corretamente e para dar início ao monitoramento: ")
+        dialog_response = input("Insira 'Y' para confirmar que as instruções foram lidas corretamente e para dar início ao monitoramento: ")
     
     while (not keyboard.is_pressed('N')) and not keyboard.is_pressed('n'):
         response = r.get("purchases/history", HEADERS, {}, {'order' : 'asc'}).json()
