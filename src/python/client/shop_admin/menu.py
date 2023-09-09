@@ -28,8 +28,7 @@ def main(data):
         else:
             if not data['enabled_cashier']:
                 if option == '1':
-                    manager.prepare_system()
-                    data['enabled_cashier'] = True
+                    data['enabled_cashier'] = manager.prepare_system()
                     menu.pause()
                     continue
             else:
