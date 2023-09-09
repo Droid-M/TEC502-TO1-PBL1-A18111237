@@ -2,9 +2,10 @@ import socket
 import mercury
 import os
 import random
+from pathlib import Path
 
 def env(key):
-    with open("server.env", "r") as env_file:
+    with open(Path(__file__).parent.__str__() + "/server.env", "r") as env_file:
         env_vars = env_file.readlines()
 
     # Percorre as variáveis de ambiente e procura pela variável "ENV"
@@ -27,16 +28,16 @@ environment = env('ENV')
 
 if environment == "SIMULATION" or environment == 'TEST':
     def read_tags():
-        # etiquetas = []
-        # n = random.randint(1, 10)
-        # for _ in range(n):
-        #     # Gere etiquetas aleatórias (exemplo)
-        #     etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
-        #     etiquetas.append(etiqueta)
-        # return etiquetas
+        etiquetas = []
+        n = random.randint(1, 2)
+        for _ in range(n):
+            # Gere etiquetas aleatórias (exemplo)
+            etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
+            etiquetas.append(etiqueta)
+        return etiquetas
+    
         etiquetas = ['123456789']
         num_itens = random.randint(0, len(etiquetas))
-        # Retorne os primeiros 'num_itens' itens da lista
         return etiquetas[:num_itens]
 else:
     # Inicializar o sensor RFID

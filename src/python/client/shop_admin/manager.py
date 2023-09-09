@@ -1,7 +1,9 @@
 from shop_admin import configure_raspberry
 from helpers import menu
+from helpers import input as ipt
 from helpers import file
 from helpers import dict
+from helpers import sensor
 from helpers import request as r
 import keyboard
 import time
@@ -18,14 +20,16 @@ PURCHASE_MAJOR_KEYS = [
     "payment_method"
 ]
 
+STOP_RASPBERRY_SERVER_COMMAND = "STOP_SERVER"
+
 def prepare_system():
     configure_raspberry.deploy_raspberry_server()
-    print('Preparando sistema...')
+    print('Leitor ativado com sucesso!')
 
 def show_cashiers_info():
     response = r.get('cashiers', HEADERS)
     r.render_response_message(response)
-    if (r.is_success(response)):
+    if r.is_success(response):
         menu.render_cashiers(response.json().get('data'))
 
 def block_cashiers():
@@ -68,7 +72,51 @@ def track_purchases():
         time.sleep(2)
         
 def register_product():
-    return
+    bar_codes = sensor.receive_data()
+    products = []
+    if bar_codes is None:
+        print("Nenhum produto foi escaneado!")
+    else:
+        for bar_code in bar_codes:
+            product = {}
+            print(f"Cadastro de informações para o código de barras #{bar_code}")
+            product['name'] = input('\tInsira o nome do produto: ')
+            product['price'] = ipt.input_number('\tInsira o preço do produto: ')
+            product['stock_quantity'] = ipt.input_integer('\tInsira a quantidade em estoque: ')
+            product['bar_code'] = bar_code
+            products.append(product)
+        response = r.post('products/new', HEADERS, {'products': products})
+        r.render_response_message(response)
+        if r.is_success(response):
+            menu.render_products(response.json().get('data'))
 
-def edit_product_stock();
-    return
+def edit_product_details():
+    details = {}
+    id = input("Informe o ID do produto que deseja alterar: ")
+    if input("Insira 'Y' para alterar o estoque: ").upper() == 'Y':
+        details['stock_quantity'] = ipt.input_integer('Nova quantidade em estoque: ')
+    if input("Insira 'Y' para alterar o nome: ").upper() == 'Y':
+        details['name'] = input("Novo nome: ")
+    if input("Insira 'Y' para alterar preço: ").upper() == 'Y':
+        details['price'] = ipt.input_number('Novo preço: ')
+    if details:
+        response = r.post(f"products/{id}/edit", HEADERS, details)
+        r.render_response_message(response)
+    else:
+        print("Nenhuma alteração definida. Cancelando operação...")
+
+def list_products():
+    response = r.get('products', HEADERS)
+    r.render_response_message(response)
+    if r.is_success(response):
+        menu.render_products(response.json().get('data'))
+
+def disable_sensor():
+    if input("Tem certeza que deseja desativar o sensor de leitura de produtos? Fazendo isso, os caixas estarão inoperantes! Insira 'Y' para confirmar ou qualquer outro valor para cancelar o procedimento: ").upper() == 'Y':
+        if sensor.sent_message(STOP_RASPBERRY_SERVER_COMMAND):
+            print("Sensor desativado com sucesso!")
+            return True
+        print("Falha ao desativar o sensor remotamente! Será necessário desativa-lo manualmente.")
+        return False
+    print("O procedimento de desativação do sensor de leitura foi cancelado!")
+    return False

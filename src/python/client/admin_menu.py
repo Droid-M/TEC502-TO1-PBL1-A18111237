@@ -12,29 +12,33 @@ def main():
 
     can_scroll_console = False
     while True:
-        if can_scroll_console:
-            menu.scroll_console()
-        print("Menu:")
-        print("1 - Administrator")
-        print("2 - Limpar console")
-        print("3 - Sair")
+        try:
+            if can_scroll_console:
+                menu.scroll_console()
+            print("Menu:")
+            print("1 - Administrator")
+            print("2 - Limpar console")
+            print("3 - Sair")
 
-        option = input("Digite o número da opção desejada: ")
+            option = input("Digite o número da opção desejada: ")
 
-        if option == '1':
-            menu.scroll_console()
-            shop_admin_menu.main(data)
-        elif option == '2':
-            can_scroll_console = False
-            menu.clear_console()
-        elif option == '3':
-            menu.sair()
-        else:
-            print("Opção inválida. Por favor, escolha uma opção válida.")
-        
-        can_scroll_console = True
-        
-        ssh.close_connection()
+            if option == '1':
+                menu.scroll_console()
+                shop_admin_menu.main(data)
+            elif option == '2':
+                can_scroll_console = False
+                menu.clear_console()
+            elif option == '3':
+                menu.sair()
+            else:
+                print("Opção inválida. Por favor, escolha uma opção válida.")
+            
+            can_scroll_console = True
+        except Exception as e:
+            raise e
+            print(f'Ops! Algo errado aconteceu: "{e}"')
+        finally:
+            ssh.close_connection()
 
 if __name__ == "__main__":
     main()

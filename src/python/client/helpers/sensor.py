@@ -1,5 +1,5 @@
 import socket
-import ast
+# import ast
 from helpers import file
 
 # Configurações do cliente
@@ -12,7 +12,6 @@ def receive_data():
     client_socket.connect((HOST, PORT))
     data_received = None
     print("Conexão estabelecida com a Raspberry Pi")
-
     data_to_send = "READ_SENSORS"
     try:
         sent_bytes = client_socket.send(data_to_send.encode())
@@ -26,3 +25,20 @@ def receive_data():
         # Encerrar a conexão
         client_socket.close()
         return data_received
+    
+def sent_message(message):
+    # Inicializar o cliente
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((HOST, PORT))
+    success = False
+    print("Conexão estabelecida com a Raspberry Pi")
+    try:
+        sent_bytes = client_socket.send(message.encode())
+        if sent_bytes == len(message):
+            success = True
+    except Exception as e:
+        print(e)
+    finally:
+        # Encerrar a conexão
+        client_socket.close()
+        return success

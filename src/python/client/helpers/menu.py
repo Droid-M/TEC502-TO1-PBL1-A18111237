@@ -1,5 +1,11 @@
 import os
 import datetime
+import locale
+
+try:
+    locale.setlocale(locale.LC_ALL, 'portuguese_brazil')
+except locale.Error:
+    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
 TRANSLATED_PAYMENT_METHODS = {
     'pix': 'Pix',
@@ -29,12 +35,15 @@ def scroll_console(lines = 10):
 def pause():
     return input("Pressione Enter para continuar...")
 
+def float_to_currency(value):
+    return locale.currency(value, grouping = True, symbol = True)
+
 def render_product(product):
     print(f"\tID: {product['id']}")
     print(f"\tNome: {product['name']}")
     print(f"\tQuantidade em estoque: {product['stock_quantity']}")
     print(f"\tCódigo: {product['bar_code']}")
-    print(f"\tPreço: {product['price']}")
+    print(f"\tPreço: {float_to_currency(product['price'])}")
     created_at = product['created_at']
     created_at = datetime.datetime.strptime(created_at, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
     print(f"\tCadastrado em: {created_at}")
@@ -47,7 +56,7 @@ def render_products(products):
 def render_purchase(purchase):
     print(f"\tID: {purchase['id']}")
     print(f"\tSituação: {TRANSLATED_PURCHASE_STATUS[purchase['status']]}")
-    print(f"\tValor total: {purchase['total_value']}")
+    print(f"\tValor total: {float_to_currency(purchase['total_value'])}")
     print(f"\tNome do comprador: {purchase['purchaser_name'] if purchase['purchaser_name'] else '(Não informado)'}")
     print(f"\tCPF do comprador: {purchase['purchaser_cpf'] if purchase['purchaser_cpf'] else '(Não informado)'}")
     print(f"\tForma de pagamento: {TRANSLATED_PAYMENT_METHODS[purchase['payment_method']]}")

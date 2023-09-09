@@ -4,7 +4,7 @@ from helpers import file
 BASE_URL = file.env("API_URL")
 
 def is_success(response):
-    return response.status_code >= 100 or response.status_code < 400
+    return response.status_code >= 100 and response.status_code < 400
 
 def get(endpoint, headers, body = {}, query = {}):
     return requests.get(BASE_URL + "/" + endpoint, data = body, params = query, headers = headers)
@@ -20,5 +20,10 @@ def render_response_message(response):
         print("Sucesso na requisição!" if is_success(response) else "Falha na requisição")
     if (response.status_code == 422):
         errors = response.json().get('errors', [])
-        for i in errors:
-            print(f"{i}: {errors[i]}")
+        if isinstance(errors, dict):
+            for i in errors:
+                print(f"{i}: {errors[i]}")
+        elif isinstance(errors, list):
+            for i in errors:
+                print(i)
+    

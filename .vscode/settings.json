@@ -3,5 +3,10 @@
     "cSpell.words": [
         "larsid",
         "RFID"
+    ],
+    "python.analysis.extraPaths": [
+        "fe-s.c.a.m\\backend\\app\\app\\DAO",
+        "fe-s.c.a.m\\backend\\app\\app",
+        "./src/python/client/shop_admin"
     ]
 }
