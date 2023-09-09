@@ -28,15 +28,17 @@ environment = env('ENV')
 
 if environment == "SIMULATION" or environment == 'TEST':
     def read_tags():
-        etiquetas = []
-        n = random.randint(1, 2)
-        for _ in range(n):
-            # Gere etiquetas aleatórias (exemplo)
-            etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
-            etiquetas.append(etiqueta)
-        return etiquetas
-    
-        etiquetas = ['123456789']
+        #Para cadastrar produtos:
+        # etiquetas = []
+        # n = random.randint(1, 2)
+        # for _ in range(n):
+        #     # Gere etiquetas aleatórias (exemplo)
+        #     etiqueta = ''.join(random.choice('0123456789ABCDEF') for _ in range(24))
+        #     etiquetas.append(etiqueta)
+        # return etiquetas
+
+        #Para criar novas compras:
+        etiquetas = ['123456789', 'cc', 'xnxo2lc2023c', 'natjepl10', 'D45014980412A22092F9D569', 'C2B45512AB12DAE9DE3D1922', 'D05E9CDB9F8729563AB5E580', '7F3C670A50F2525AD957EFFF', '66B31F3E924BB07723E579FA']
         num_itens = random.randint(0, len(etiquetas))
         return etiquetas[:num_itens]
 else:
