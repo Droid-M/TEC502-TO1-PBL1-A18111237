@@ -13,28 +13,27 @@ HEADERS = {
     'content': 'application/json'
 }
 
-async def check_cashier_block_status(data):
-    response = r.get('', HEADERS)
+def check_cashier_block_status():
+    response = r.get('cashiers/me/blocking-status', HEADERS)
     r.render_response_message(response)
     if r.is_success(response):
-        data['cashier_locked'] = response.json().get('is_locked')
-
-
-def cashier_is_locked():
-    return
+        return response.json().get('data')['is_blocked']
+    return None
 
 def scan_products():
     return sensor.receive_data()
 
 def register_purchase(bar_codes):
     if input("Para prosseguir com a compra, insira 'Y': ").upper() == 'Y':
-        response = r.post('', HEADERS, {'products_ids' : bar_codes})
+        response = r.post('purchases/register', HEADERS, {'products_bar_code' : bar_codes})
         r.render_response_message(response)
         if r.is_success(response):
             print("Compra processada: ")
-            menu.render_purchase(response.json().get('data'))
+            return menu.render_purchase(response.json().get('data'))
+        return None
     else:
         print("Compra cancelada!")
+        return None
 
 def pay_purchase(purchase_id):
-    return
+    return True

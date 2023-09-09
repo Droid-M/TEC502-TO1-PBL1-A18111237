@@ -7,7 +7,10 @@ def main():
     ssh.init_connection()
 
     data = {
-        'cashier_locked' : False
+        'cashier_locked' : False,
+        'checkout_status' : None,
+        'bar_codes' : None,
+        'purchase' : None
     }
 
     can_scroll_console = False
@@ -30,8 +33,10 @@ def main():
                 can_scroll_console = False
                 menu.clear_console()
             elif option == '3':
+                ssh.close_connection()
                 menu.close()
             elif option == '4':
+                ssh.close_connection()
                 menu.restart()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")
@@ -41,8 +46,6 @@ def main():
             # raise e
             print(f'Ops! Algo errado aconteceu: "{e}"')
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
-        finally:
-            ssh.close_connection()
 
 if __name__ == "__main__":
     main()
