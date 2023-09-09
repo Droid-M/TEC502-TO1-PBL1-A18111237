@@ -4,7 +4,7 @@ from shop_admin import menu as shop_admin_menu
 from shop_admin import ssh_open_connection as ssh
 
 def main():
-    ssh.init_connection();
+    ssh.init_connection()
 
     data = {
         'enabled_cashier' : False

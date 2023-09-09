@@ -30,4 +30,4 @@ else:
         print("Simulação: Conexão SSH encerrada com sucesso!")
 
 def get_ssh_client():
-    return ssh_client;
+    return ssh_client

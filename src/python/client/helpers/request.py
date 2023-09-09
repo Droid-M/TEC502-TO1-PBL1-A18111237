@@ -1,4 +1,4 @@
-import requests;
+import requests
 from helpers import file
 
 BASE_URL = file.env("API_URL")
