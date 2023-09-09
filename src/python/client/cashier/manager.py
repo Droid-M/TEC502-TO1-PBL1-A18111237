@@ -13,6 +13,12 @@ HEADERS = {
     'content': 'application/json'
 }
 
+SORTED_PAYMENT_METHODS = {
+    1 : 'credit_card',
+    2 : 'pix',
+    3 : 'cash'
+}
+
 def check_cashier_block_status():
     response = r.get('cashiers/me/blocking-status', HEADERS)
     r.render_response_message(response)
@@ -38,7 +44,22 @@ def register_purchase(bar_codes):
         return None
 
 def pay_purchase(purchase_id):
-    return True
+    purchase = {}
+    if input("Para confirmar o pagamento da compra, insira 'Y': ").upper() == 'Y':
+        payment_method = ipt.input_integer("Informe a forma de pagamento:\n\t1 - Cartão de crédito\n\t2 - Pix\n\t3 - Dinheiro em espécie\nSua escolha: ")
+        while not (payment_method >= 1 and payment_method <= 3):
+            print("Opção inválida!")
+            payment_method = ipt.input_integer("Informe a forma de pagamento:\n\t1 - Cartão de crédito\n\t2 - Pix\n\t3 - Dinheiro em espécie\nSua escolha: ")
+        purchase['payment_method'] = SORTED_PAYMENT_METHODS[int(payment_method)] # type: ignore
+        if input("Insira 'Y' se deseja registrar o nome e CPF do cliente na compra: ").upper() == 'Y':
+            purchase['purchaser_name'] = input("Informe o nome do cliente: ")
+            purchase['purchaser_cpf'] = ipt.input_cpf("Informe o CPF do cliente: ")
+        response = r.post(f'purchases/{purchase_id}/pay', HEADERS, purchase)
+        r.render_response_message(response)
+        if r.is_success(response):
+            menu.render_purchase(response.json().get('data'))
+            return True
+    return False
 
 def cancel_purchase(purchase_id):
     if input("Para confirmar o cancelamento da compra, insira 'Y': ").upper() == 'Y':
