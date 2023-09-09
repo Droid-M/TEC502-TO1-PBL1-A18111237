@@ -30,7 +30,7 @@ def main(data):
         elif data['checkout_status'] == 'SCANNED_PRODUCTS':
             print('3 - Pagar compra')
             print('4 - Cancelar compra')
-            print('5 - Verificar novamente a situação do bloqueio')
+        print('5 - Verificar novamente a situação do bloqueio')
 
         option = input("Digite o número da opção desejada: ")
 
