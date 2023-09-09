@@ -2,8 +2,8 @@ from helpers import menu
 from shop_admin import manager
 
 def main(data):
-    cancelMenu = False
-    while not cancelMenu:
+    cancel_menu = False
+    while not cancel_menu:
         menu.scroll_console()
         print("Menu do administrador:")
         print("0 - Retornar")
@@ -24,7 +24,7 @@ def main(data):
         option = input("Digite o número da opção desejada: ")
 
         if option == '0':
-            cancelMenu = True
+            cancel_menu = True
         else:
             if not data['enabled_cashier']:
                 if option == '1':
@@ -62,4 +62,4 @@ def main(data):
                 manager.edit_product_details()
                 menu.pause()
             else:
-                    print("Opção inválida. Por favor, escolha uma opção válida.")
+                print("Opção inválida. Por favor, escolha uma opção válida.")

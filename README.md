@@ -9,6 +9,7 @@
 - paramiko
 - requests
 - pytz
+- keyboard
 
 ### **Ambientação**
 
