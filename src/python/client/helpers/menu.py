@@ -28,7 +28,7 @@ def to_brazil_time(database_value):
     try:
         dt = datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S')
         brasilia_timezone = pytz.timezone('America/Sao_Paulo')
-        return pytz.utc.localize(dt).astimezone(brasilia_timezone)
+        return pytz.utc.localize(dt).astimezone(brasilia_timezone).strftime('%d/%m/%Y às %H:%M:%S')
     except ValueError:
         return datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
 
@@ -42,7 +42,7 @@ def restart():
         else:
             # Se estiver em outra plataforma, apenas execute novamente o programa
             clear_console()
-            os.execv(sys.executable, ['python'] + sys.argv)
+            os.execv(sys.executable if sys.executable else '/usr/bin/python3', ['python'] + sys.argv)
         sys.exit()
     else:
         print("Operação cancelada!")
@@ -66,6 +66,12 @@ def pause():
 
 def float_to_currency(value):
     return locale.currency(value, grouping = True, symbol = True)
+
+def get_last_registered_purchase(cashier):
+    purchases = cashier['registered_purchases']
+    if isinstance(purchases, dict):
+        return list(purchases.values())[-1]
+    return None
 
 def render_product(product):
     print(f"\tID: {product['id']}")
@@ -108,8 +114,13 @@ def render_cashier(cashier):
     print(f"\tIP/MAC: {cashier['ip']}")
     print(f"\tBloqueado: {'Sim' if cashier['is_blocked'] else 'Não'}")
     print(f"\tQuantidade de compras registradas: {len(cashier['registered_purchases'])}")
-    # last_registered_purchase = cashier_in_use(cashier)
-    # print(f"\tEfetuando compras neste momento: {}")
+    last_registered_purchase = get_last_registered_purchase(cashier)
+    if last_registered_purchase != None:
+        print(f"\tÚltima compra registrada em: {to_brazil_time(last_registered_purchase['created_at'])}")
+        print(f"\tID da ultima compra registrada: #{last_registered_purchase['id']}")
+        print(f"\tSituação da ultima compra registrada: {TRANSLATED_PURCHASE_STATUS[last_registered_purchase['status']]}")
+    else:
+        print("\tÚltima compra registrada em: Nenhuma compra foi registrada")
     scroll_console(2)
 
 def render_cashiers(cashiers):

@@ -10,6 +10,7 @@
 - requests
 - pytz
 - keyboard
+- pynput
 
 ### **Ambientação**
 
