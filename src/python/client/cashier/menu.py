@@ -26,11 +26,11 @@ def main(data):
             print('1 - Escanear produtos para a nova compra')
         elif data['checkout_status'] == 'SCANNING_PRODUCTS':
             print('1 - Re-escanear produtos')
-            print('2 - Validar compra')
+            print('2 - Registrar e validar compra')
         elif data['checkout_status'] == 'SCANNED_PRODUCTS':
             print('3 - Pagar compra')
             print('4 - Cancelar compra')
-        print('5 - Verificar novamente a situação do bloqueio')
+        print('5 - Verificar a situação do caixa')
 
         option = input("Digite o número da opção desejada: ")
 
@@ -75,8 +75,8 @@ def main(data):
                 data['checkout_status'] = 'SCANNING_PRODUCTS'
             menu.pause()
         elif option == '5':
-            # check_status(data)~
-            continue;
+            manager.check_cashier_situation()
+            menu.pause()
         else:
             print("Opção inválida. Por favor, escolha uma opção válida.")
         

@@ -54,6 +54,8 @@ def main():
             print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
         except decoder.JSONDecodeError:
             print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
+        except ConnectionRefusedError:
+            print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, entre em contato com o administrador e solicite o reinicio do sistema de leitura do sensor.")
         except Exception as e:
             print(f'Ops! Algo errado aconteceu: "{e}"')
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")

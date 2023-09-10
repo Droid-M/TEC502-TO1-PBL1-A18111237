@@ -71,3 +71,11 @@ def cancel_purchase(purchase_id):
         r.render_response_message(response)
         return r.is_success(response)
     return False
+
+def check_cashier_situation():
+    response = r.post('cashiers/register', HEADERS)
+    if r.is_success(response):
+        print("Situação consultada com sucesso!")
+        menu.render_cashier(response.json().get('data'))
+    else:
+        print("Falha ao consultar situação!")

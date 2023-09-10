@@ -109,7 +109,7 @@ def render_purchases(purchases):
             print("O ID informado não pertence a nenhuma das compras listadas anteriormente!")
 
 def render_cashier(cashier):
-    print(f"Exibindo informações para o caixa {cashier['id']}:")
+    print(f"Exibindo informações para o caixa #{cashier['id']}:")
     print(f"\tID: {cashier['id']}")
     print(f"\tIP/MAC: {cashier['ip']}")
     print(f"\tBloqueado: {'Sim' if cashier['is_blocked'] else 'Não'}")
