@@ -3,6 +3,7 @@ from helpers import file
 from cashier import menu as cashier_menu
 from shop_admin import ssh_open_connection as ssh
 from getpass import getpass
+from cashier import manager
 
 def auth():
     key = getpass("Insira a chave de caixista para ter acesso ao sistema: ")
@@ -55,4 +56,5 @@ def main():
 
 if __name__ == "__main__":
     auth()
+    manager.register_cashier_me()
     main()

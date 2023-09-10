@@ -12,7 +12,7 @@ HEADERS = {
     'admin-token': file.env("ADMIN_TOKEN"),
     'accept': 'application/json',
     'content': 'application/json',
-    'mac-address': r.get_mac_address()
+    'client-mac-address': r.get_mac_address()
 }
 
 PURCHASE_MAJOR_KEYS = [

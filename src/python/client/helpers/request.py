@@ -5,6 +5,7 @@ import uuid
 BASE_URL = file.env("API_URL")
 
 def get_mac_address():
+    # função criada base em "www.codespeedy.com/how-to-get-mac-address-of-a-device-in-python"
     mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
     return ':'.join([mac[i:i+2] for i in range(0, 12, 2)])
 

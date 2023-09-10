@@ -9,7 +9,7 @@ HEADERS = {
     'cashier-token': file.env('CASHIER_TOKEN'),
     'accept': 'application/json',
     'content': 'application/json',
-    'mac-address': r.get_mac_address()
+    'client-mac-address': r.get_mac_address()
 }
 
 SORTED_PAYMENT_METHODS = {
@@ -17,6 +17,11 @@ SORTED_PAYMENT_METHODS = {
     2 : 'pix',
     3 : 'cash'
 }
+
+def register_cashier_me():
+    print('Registrando caixa no sistema...')
+    response = r.post('cashiers/register', HEADERS)
+    r.render_response_message(response)
 
 def check_cashier_block_status():
     response = r.get('cashiers/me/blocking-status', HEADERS)
