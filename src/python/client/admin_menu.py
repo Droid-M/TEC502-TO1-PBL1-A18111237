@@ -3,6 +3,7 @@ from helpers import file
 from shop_admin import menu as shop_admin_menu
 from getpass import getpass
 from requests import exceptions
+from json import decoder
 
 def auth():
     key = getpass("Insira a chave de administrador para ter acesso ao sistema: ")
@@ -43,12 +44,13 @@ def main():
             can_scroll_console = True
         except exceptions.ConnectionError:
             print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
+        except decoder.JSONDecodeError:
+            print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
         except Exception as e:
-            raise e
             print(f'Ops! Algo errado aconteceu: "{e}"')
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
 
 if __name__ == "__main__":
-    # auth()
+    auth()
     main()
 

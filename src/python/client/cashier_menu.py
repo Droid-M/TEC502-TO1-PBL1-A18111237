@@ -4,6 +4,7 @@ from cashier import menu as cashier_menu
 from getpass import getpass
 from cashier import manager
 from requests import exceptions
+from json import decoder
 
 def auth():
     key = getpass("Insira a chave de caixista para ter acesso ao sistema: ")
@@ -51,12 +52,11 @@ def main():
             can_scroll_console = True
         except exceptions.ConnectionError:
             print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
+        except decoder.JSONDecodeError:
+            print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
         except Exception as e:
-            # raise e
             print(f'Ops! Algo errado aconteceu: "{e}"')
-            print("\n-----Recomendamos fortemente que reinicie a aplicação...\n\n")
-            # if input("Insira 'Y' para permitir o reinicio da aplicação ou insira qualquer outro valor para prosseguir com o fluxo atual: ").upper() == 'Y':
-            #     menu.restart()
+            print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
 
 if __name__ == "__main__":
     auth()

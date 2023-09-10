@@ -21,9 +21,14 @@ PURCHASE_MAJOR_KEYS = [
     "payment_method"
 ]
 
+CASHIER_MAJOR_KEYS = [
+    "id", "ip", "is_blocked", "last_purchase_id", "last_purchase_status"
+]
+
 STOP_RASPBERRY_SERVER_COMMAND = "STOP_SERVER"
 
 stop_purchases_watch = False
+stop_cashiers_watch = False
 
 def prepare_system():
     configure_raspberry.deploy_raspberry_server()
@@ -153,5 +158,44 @@ def disable_sensor():
     print("O procedimento de desativação do sensor de leitura foi cancelado!")
     return False
 
-# def track_cashiers():
-#     showed
+def stop_watch_cashiers_press_key(pressed_key):
+    global stop_cashiers_watch
+    try:
+        if pressed_key.char.lower() == 'n':
+            stop_cashiers_watch = True
+    except AttributeError:
+        pass
+
+def track_cashiers():
+    global stop_cashiers_watch
+    keyboard_listener = keyboard.Listener(on_press=stop_watch_cashiers_press_key)
+    print("\nO processo de monitoramento de caixas será iniciado a seguir. Para interrompê-lo, pressione 'N' durante 2 segundos assim que o processo iniciar.\n\n")
+    dialog_response = ''
+    while dialog_response.upper() != 'Y':
+        dialog_response = input("Insira 'Y' para confirmar que as instruções foram lidas corretamente e para dar início ao monitoramento: ")
+    showed_cashiers = {}
+    keyboard_listener.start()
+    while (not stop_cashiers_watch):
+        response = r.get("cashiers", HEADERS, {}, {'order' : 'asc'}).json()
+        cashiers = response.get("data")
+        for i in cashiers:
+            cashier = cashiers[i]
+            last_purchase = menu.get_last_registered_purchase(cashier)
+            if last_purchase != None:
+                cashier['last_purchase_id'] = last_purchase['id']
+                cashier['last_purchase_status'] = last_purchase['status']
+            else:
+                cashier['last_purchase_id'] = None
+                cashier['last_purchase_status'] = None
+            can_show = True
+            if i in showed_cashiers:
+                modified_values = dict.compare_dicts(showed_cashiers[i], cashier, CASHIER_MAJOR_KEYS)
+                can_show = len(modified_values) != 0
+                for key, values in modified_values.items():
+                    print(f"Caixa #{cashier['id']}: A propriedade '{key}' foi modificada de '{values[0]}' para '{values[1]}'")
+            if can_show:
+                menu.render_cashier(cashier)
+            showed_cashiers[i] = cashier
+        time.sleep(2)
+    keyboard_listener.stop()
+    stop_cashiers_watch = False

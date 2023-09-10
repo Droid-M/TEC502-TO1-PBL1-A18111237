@@ -20,6 +20,7 @@ def main(data):
         if data['enabled_cashier']:
             print("9 - Registrar produtos")
         print("10 - Editar produto")
+        print("11 - Acompanhar caixas")
 
         option = input("Digite o número da opção desejada: ")
 
@@ -59,6 +60,9 @@ def main(data):
                 menu.pause()
             elif option == '10':
                 manager.edit_product_details()
+                menu.pause()
+            elif option == '11':
+                manager.track_cashiers()
                 menu.pause()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")
