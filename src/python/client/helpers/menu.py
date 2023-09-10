@@ -33,14 +33,26 @@ def to_brazil_time(database_value):
         return datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
 
 def restart():
-    print("Reiniciando programa...")
-    command = [sys.executable] + sys.argv
-    subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_CONSOLE)
-    sys.exit()
+    if input("Tem certeza que deseja reiniciar o programa (Insira 'Y' para confirmar)? ").upper() == 'Y':
+        print("Reiniciando programa...")
+        if os.name == 'nt':
+            # Se estiver no Windows, use CREATE_NEW_CONSOLE
+            command = [sys.executable] + sys.argv
+            subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_CONSOLE)
+        else:
+            # Se estiver em outra plataforma, apenas execute novamente o programa
+            clear_console()
+            os.execv(sys.executable, ['python'] + sys.argv)
+        sys.exit()
+    else:
+        print("Operação cancelada!")
 
 def close():
-    print("Saindo do programa...")
-    exit()
+    if input("Tem certeza que deseja sair do programa (Insira 'Y' para confirmar)? ").upper() == 'Y':
+        print("Saindo do programa...")
+        exit()
+    else:
+        print("Operação cancelada!")
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
