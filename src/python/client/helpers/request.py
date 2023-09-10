@@ -1,7 +1,12 @@
 import requests
 from helpers import file
+import uuid
 
 BASE_URL = file.env("API_URL")
+
+def get_mac_address():
+    mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
+    return ':'.join([mac[i:i+2] for i in range(0, 12, 2)])
 
 def is_success(response):
     return response.status_code >= 100 and response.status_code < 400

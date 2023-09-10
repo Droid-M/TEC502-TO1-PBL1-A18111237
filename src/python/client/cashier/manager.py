@@ -4,13 +4,12 @@ from helpers import file
 from helpers import dict
 from helpers import sensor
 from helpers import request as r
-import keyboard
-import time
 
 HEADERS = {
     'cashier-token': file.env('CASHIER_TOKEN'),
     'accept': 'application/json',
-    'content': 'application/json'
+    'content': 'application/json',
+    'mac-address': r.get_mac_address()
 }
 
 SORTED_PAYMENT_METHODS = {

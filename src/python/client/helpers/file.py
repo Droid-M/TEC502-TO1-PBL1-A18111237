@@ -17,7 +17,7 @@ def env(key):
     global selected_env_path
     global env_folder_path
     if selected_env_path is None:
-        selected_env_path = env_folder_path + "\\" + read_env(env_folder_path + "\\.env", 'SELECTED_ENV')
+        selected_env_path = env_folder_path + "/" + read_env(env_folder_path + "/.env", 'SELECTED_ENV')
     return read_env(selected_env_path, key)
 
 def get_env_path():
