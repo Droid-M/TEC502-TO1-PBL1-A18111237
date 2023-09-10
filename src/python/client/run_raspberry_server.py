@@ -11,7 +11,12 @@ ssh.init_connection()
 channel = ssh.ssh_client.get_transport().open_session()
 print("Não feche este terminal durante o uso da sua aplicação!")
 stdin, stdout, stderr = ssh.ssh_client.exec_command(f'python3 {remote_script_path}')
+# Exibe mensagens de 'sucesso'
 for line in iter(stdout.readline, ""):
+    print(line, end="")
+
+# Exibe mensagens de erro
+for line in iter(stderr.readline, ""):
     print(line, end="")
 
 # Aguarda até que o comando seja concluído

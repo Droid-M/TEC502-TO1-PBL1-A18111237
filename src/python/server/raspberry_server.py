@@ -47,6 +47,7 @@ def handle_client(client_socket):
         cli_signal = client_socket.recv(1024).decode()
         print('Mensagem recebida: ', cli_signal)
         if cli_signal == "READ_SENSORS":
+            print("Lendo etiquetas através do sensor...")
             # Ler etiquetas do sensor RFID
             detected_tags = read_tags()
             # Enviar dados para o cliente
@@ -54,6 +55,7 @@ def handle_client(client_socket):
             client_socket.send(data_to_send.encode())
             print("Dados enviados:", data_to_send)
         elif cli_signal == 'STOP_SERVER':
+            print("Registrando o comando de parada...")
             signal = 'STOP_SERVER'
     finally:
         # Encerrar a conexão com o cliente atual
@@ -73,12 +75,14 @@ def main():
             # Iniciar uma nova thread para lidar com o cliente
             client_handler = threading.Thread(target=handle_client, args=(client_socket,))
             client_handler.start()
+            print(signal)
     except KeyboardInterrupt:
         print("Servidor encerrado pelo usuário.")
     finally:
         # Encerrar conexões e limpar recursos
         print("Servidor encerrado...")
         server_socket.close()
+        signal = None
 
 if __name__ == '__main__':
     # Configurações do servidor

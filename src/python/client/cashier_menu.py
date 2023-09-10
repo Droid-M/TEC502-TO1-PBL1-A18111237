@@ -1,7 +1,6 @@
 from helpers import menu
 from helpers import file
 from cashier import menu as cashier_menu
-from shop_admin import ssh_open_connection as ssh
 from getpass import getpass
 from cashier import manager
 from requests import exceptions
@@ -12,8 +11,6 @@ def auth():
         key = getpass('Chave incorreta! Insira a chave de caixista para ter acesso ao sistema: ')
 
 def main():
-    ssh.init_connection()
-
     data = {
         'cashier_locked' : False,
         'checkout_status' : None,
@@ -45,10 +42,8 @@ def main():
                 can_scroll_console = False
                 menu.clear_console()
             elif option == '3':
-                ssh.close_connection()
                 menu.close()
             elif option == '4':
-                ssh.close_connection()
                 menu.restart()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")

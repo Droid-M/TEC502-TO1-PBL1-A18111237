@@ -105,9 +105,11 @@ def render_purchases(purchases):
 def render_cashier(cashier):
     print(f"Exibindo informações para o caixa {cashier['id']}:")
     print(f"\tID: {cashier['id']}")
-    print(f"\tIP: {cashier['ip']}")
+    print(f"\tIP/MAC: {cashier['ip']}")
     print(f"\tBloqueado: {'Sim' if cashier['is_blocked'] else 'Não'}")
     print(f"\tQuantidade de compras registradas: {len(cashier['registered_purchases'])}")
+    # last_registered_purchase = cashier_in_use(cashier)
+    # print(f"\tEfetuando compras neste momento: {}")
     scroll_console(2)
 
 def render_cashiers(cashiers):

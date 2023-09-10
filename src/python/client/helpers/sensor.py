@@ -27,12 +27,12 @@ def receive_data():
         return data_received
     
 def sent_message(message):
+    success = False
     # Inicializar o cliente
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((HOST, PORT))
-    success = False
-    print("Conexão estabelecida com a Raspberry Pi")
     try:
+        client_socket.connect((HOST, PORT))
+        print("Conexão estabelecida com a Raspberry Pi")
         sent_bytes = client_socket.send(message.encode())
         if sent_bytes == len(message):
             success = True

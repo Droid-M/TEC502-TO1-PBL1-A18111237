@@ -1,7 +1,6 @@
 from helpers import menu
 from helpers import file
 from shop_admin import menu as shop_admin_menu
-from shop_admin import ssh_open_connection as ssh
 from getpass import getpass
 from requests import exceptions
 
@@ -11,8 +10,6 @@ def auth():
         key = getpass('Chave incorreta! Insira a chave de administrador para ter acesso ao sistema: ')
 
 def main():
-    ssh.init_connection()
-
     data = {
         'enabled_cashier' : False
     }
@@ -37,10 +34,8 @@ def main():
                 can_scroll_console = False
                 menu.clear_console()
             elif option == '3':
-                ssh.close_connection()
                 menu.close()
             elif option == '4':
-                ssh.close_connection()
                 menu.restart()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")
@@ -49,11 +44,11 @@ def main():
         except exceptions.ConnectionError:
             print("Ops! Aconteceu um problema na comunicação com o servidor. Por favor, verifique sua conexão com a internet e tente novamente...")
         except Exception as e:
-            # raise e
+            raise e
             print(f'Ops! Algo errado aconteceu: "{e}"')
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
 
 if __name__ == "__main__":
-    auth()
+    # auth()
     main()
 

@@ -25,10 +25,20 @@ STOP_RASPBERRY_SERVER_COMMAND = "STOP_SERVER"
 
 def prepare_system():
     configure_raspberry.deploy_raspberry_server()
-    time.sleep(1)
-    success = sensor.sent_message('TESTING')
-    print ('Leitor ativado com sucesso!' if success else 'Falha ao ativar o sensor!')
-    return success
+    success = True
+    j = 4
+    for i in range(2, -1, -1):
+        while (j >= 1):
+            print(f"Testando estado da conexão, por favor, aguarde {4 * i + j} segundo(s) a partir de agora...")
+            time.sleep(1)
+            j -= 1
+        success = sensor.sent_message('TESTING')
+        if not success:
+            print('Falha ao ativar o sensor!')
+            return False
+        j = 4
+    print('Leitor ativado com sucesso!')
+    return True
 
 def show_cashiers_info():
     response = r.get('cashiers', HEADERS)
