@@ -2,6 +2,12 @@ from helpers import menu
 from helpers import file
 from shop_admin import menu as shop_admin_menu
 from shop_admin import ssh_open_connection as ssh
+from getpass import getpass
+
+def auth():
+    key = getpass("Insira a chave de administrador para ter acesso ao sistema: ")
+    while key != file.env('ADMIN_TOKEN'):
+        key = getpass('Chave incorreta! Insira a chave de administrador para ter acesso ao sistema: ')
 
 def main():
     ssh.init_connection()
@@ -45,4 +51,6 @@ def main():
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
 
 if __name__ == "__main__":
+    auth()
     main()
+

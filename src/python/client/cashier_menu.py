@@ -2,6 +2,12 @@ from helpers import menu
 from helpers import file
 from cashier import menu as cashier_menu
 from shop_admin import ssh_open_connection as ssh
+from getpass import getpass
+
+def auth():
+    key = getpass("Insira a chave de caixista para ter acesso ao sistema: ")
+    while key != file.env('CASHIER_TOKEN'):
+        key = getpass('Chave incorreta! Insira a chave de caixista para ter acesso ao sistema: ')
 
 def main():
     ssh.init_connection()
@@ -48,4 +54,5 @@ def main():
             print("\n-----Recomendamos fortemente que reinicie a aplicação.\n\n")
 
 if __name__ == "__main__":
+    auth()
     main()
