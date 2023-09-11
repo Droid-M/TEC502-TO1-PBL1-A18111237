@@ -1,0 +1,10 @@
+version: '3'
+services:
+  supermarket:
+    image: m:1
+    container_name: supermarket
+    volumes:
+      - meu_volume:/app
+
+volumes:
+  meu_volume:
