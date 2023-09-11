@@ -6,7 +6,9 @@ from helpers import dict
 from helpers import sensor
 from helpers import request as r
 import time
-from pynput import keyboard
+# from pynput import keyboard
+
+keyboard = {} # FIXME - Restaurar a importação de 'keyboard' e remover esta variável
 
 HEADERS = {
     'admin-token': file.env("ADMIN_TOKEN"),

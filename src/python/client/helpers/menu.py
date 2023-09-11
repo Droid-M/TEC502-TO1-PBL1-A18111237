@@ -6,9 +6,9 @@ import pytz
 from datetime import datetime
 
 try:
-    locale.setlocale(locale.LC_ALL, 'portuguese_brazil')
-except locale.Error:
     locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+except locale.Error:
+    locale.setlocale(locale.LC_ALL, 'portuguese_brazil')
 
 TRANSLATED_PAYMENT_METHODS = {
     'pix': 'Pix',
