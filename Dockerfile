@@ -5,13 +5,13 @@ FROM python:3.11
 WORKDIR /app
 
 # Copie os arquivos de código-fonte para o diretório de trabalho
-COPY src /app
+COPY /src /app
 
-# Instale as dependências Python do seu projeto
-RUN pip install paramiko requests pytz keyboard pynput
+# Instale as dependências do sistema necessárias para as bibliotecas
+RUN apt-get update && apt-get install -y libffi-dev libssl-dev libx11-dev
 
-# Exponha a porta, se necessário (depende do seu código)
-# EXPOSE 8080
+# Instale as bibliotecas Python a partir do arquivo requirements.txt
+RUN pip install --no-cache-dir -r ./requirements.txt
 
 # Comando para executar o script principal (admin_menu.py)
-CMD ["python", "src/python/client/admin_menu.py"]
+CMD ["python", "python/client/admin_menu.py"]
