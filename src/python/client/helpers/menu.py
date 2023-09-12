@@ -19,22 +19,28 @@ TRANSLATED_PURCHASE_STATUS = {
 }
 
 def to_brazil_time(database_value):
+    """Formata um valor timestamp (do banco de dados) para o formato D/M/YYYY às H:M:S (exemplo: '2023-12-09 16:40:03' => '12/09/2023 às 16:40:03') e aplica o fuso horário"""
     try:
+        # Define o formato do dado de entrada
         dt = datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S')
+        # Define o fuso horário do Brasil (-3 h) pois estou considerando que o banco de dados está sem fuso horário (+0 h)
         brasilia_timezone = pytz.timezone('America/Sao_Paulo')
+        # Formata o valor de entrada (já com fuso horário) para o padrão 'D/M/YYYY às H:M:S'
         return pytz.utc.localize(dt).astimezone(brasilia_timezone).strftime('%d/%m/%Y às %H:%M:%S')
     except ValueError:
+        # Formata o valor mas sem usar fuso horário
         return datetime.strptime(database_value, '%Y-%m-%d %H:%M:%S').strftime('%d/%m/%Y às %H:%M:%S')
 
 def restart():
+    """Reinicia a aplicação"""
     if input("Tem certeza que deseja reiniciar o programa (Insira 'Y' para confirmar)? ").upper() == 'Y':
         print("Reiniciando programa...")
         if os.name == 'nt':
-            # Se estiver no Windows, use CREATE_NEW_CONSOLE
+            # Se estiver no Windows, use CREATE_NEW_CONSOLE para executar em um novo terminal CMD
             command = [sys.executable] + sys.argv
             subprocess.Popen(command, creationflags=subprocess.CREATE_NEW_CONSOLE)
         else:
-            # Se estiver em outra plataforma, apenas execute novamente o programa
+            # Se estiver em outra plataforma, apenas execute novamente o programa no mesmo terminal, limpando as saídas do programa anterior
             clear_console()
             os.execv(sys.executable if sys.executable else '/usr/bin/python3', ['python'] + sys.argv)
         sys.exit()
@@ -42,6 +48,7 @@ def restart():
         print("Operação cancelada!")
 
 def close():
+    """Encerra o programa"""
     if input("Tem certeza que deseja sair do programa (Insira 'Y' para confirmar)? ").upper() == 'Y':
         print("Saindo do programa...")
         exit()
@@ -49,19 +56,24 @@ def close():
         print("Operação cancelada!")
 
 def clear_console():
+    """ "Limpa" o terminal """
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def scroll_console(lines = 10):
+    """Realiza uma pseudo-limpeza do console, exibindo linhas em branco até que o conteúdo anterior não esteja mais visível"""
     for _ in range(lines):
         print()
 
 def pause():
+    """Realiza um pseudo-bloqueio no programa até o usuário pressionar a teclar Enter para continuar o fluxo"""
     return input("Pressione Enter para continuar...")
 
 def float_to_currency(value):
+    """Formata qualquer valor do tipo ponto flutuante para o tipo moeda BRL (R$ XX,XX). Exemplo: '7.39' se torna 'R$ 7,39' """
     return f'R$ {value:.2f}'.replace('.', ',')
 
 def get_last_registered_purchase(cashier):
+    """"Busca a última compra registrada por um caixa (considerando que a ultima compra será sempre o ultimo elemento da lista)"""
     purchases = cashier['registered_purchases']
     if isinstance(purchases, dict):
         return list(purchases.values())[-1]

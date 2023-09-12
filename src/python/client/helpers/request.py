@@ -10,6 +10,7 @@ def get_mac_address():
     return ':'.join([mac[i:i+2] for i in range(0, 12, 2)])
 
 def is_success(response):
+    """Informa se a requisição teve status de sucesso (entre 100 e 399) ou não"""
     return response.status_code >= 100 and response.status_code < 400
 
 def get(endpoint, headers, body = {}, query = {}):
@@ -19,6 +20,9 @@ def post(endpoint, headers, body = {}, query = {}):
     return requests.post(BASE_URL + "/" + endpoint, json = body, params = query, headers = headers)
 
 def render_response_message(response):
+    """Exibe a mensagem contida na requisição.
+    Em caso de status 422 na requisição, as mensagens de erro de validação contidas no corpo da resposta serão exibidas também
+    """
     message = response.json().get("message")
     if message:
         print(message)

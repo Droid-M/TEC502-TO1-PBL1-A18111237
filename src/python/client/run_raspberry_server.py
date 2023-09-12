@@ -1,6 +1,5 @@
 from helpers import file
 from shop_admin import ssh_open_connection as ssh
-import time
 
 # Caminho remoto na Raspberry Pi onde o script será copiado
 remote_script_path = file.env("RASPBERRY_WORK_DIRECTORY") + "server.py"

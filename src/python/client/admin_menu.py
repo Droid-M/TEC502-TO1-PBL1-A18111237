@@ -6,13 +6,15 @@ from requests import exceptions
 from json import decoder
 
 def auth():
+    """Exige uma senha de Administrador para liberar o acesso ao menu/programa"""
     key = getpass("Insira a chave de administrador para ter acesso ao sistema: ")
     while key != file.env('ADMIN_TOKEN'):
         key = getpass('Chave incorreta! Insira a chave de administrador para ter acesso ao sistema: ')
 
 def main():
+    # Define a variável que manterá o status do menu de administrador
     data = {
-        'enabled_cashier' : False
+        'enabled_cashier' : False # 'enabled_cashier' indica se os caixas podem ou não funcionar (pois, em teria, sem os leitores de etiqueta, os caixas não deveriam funcionar...)
     }
 
     can_scroll_console = False

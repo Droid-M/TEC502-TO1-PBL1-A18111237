@@ -7,17 +7,18 @@ from requests import exceptions
 from json import decoder
 
 def auth():
+    """Exige uma senha de Caixista para liberar o acesso ao menu/programa"""
     key = getpass("Insira a chave de caixista para ter acesso ao sistema: ")
     while key != file.env('CASHIER_TOKEN'):
         key = getpass('Chave incorreta! Insira a chave de caixista para ter acesso ao sistema: ')
 
 def main():
     data = {
-        'cashier_locked' : False,
-        'checkout_status' : None,
-        'bar_codes' : None,
-        'purchase' : None,
-        'cashier_is_registered': None
+        'cashier_locked' : False, #Indica se o caixa está bloqueado
+        'checkout_status' : None, #Indica o status da compra (lendo produtos, validando, pagando, cancelando)
+        'bar_codes' : None, #Registra os "códigos dos produtos" lidos na ultima compra
+        'purchase' : None, #Registra dados da ultima compra validada
+        'cashier_is_registered': None #Indica se o caixa está registrado no sistema (api) do Mercado
     }
     can_scroll_console = False
 
@@ -34,11 +35,11 @@ def main():
             option = input("Digite o número da opção desejada: ")
 
             if option == '1':
-                if data['cashier_is_registered'] == None:
-                    manager.register_cashier_me()
+                if data['cashier_is_registered'] == None: #Na primeira execução do laço 'while', o aplicativo sempre considerará que o caixa não está registrado (por mais que ele esteja)
+                    manager.register_cashier_me() #Registra o caixa (ou pelo menos tenta)
                     data['cashier_is_registered'] = True
                 menu.scroll_console()
-                cashier_menu.main(data)
+                cashier_menu.main(data) #Acessa o menu do caixa após a tentativa de registro do caixa. Isso implica que qualquer falha ao tentar se registrar impedirá o caixa de acessar o menu de caixista
             elif option == '2':
                 can_scroll_console = False
                 menu.clear_console()
