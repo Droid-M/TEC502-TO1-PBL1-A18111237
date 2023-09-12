@@ -40,5 +40,5 @@ ENV LC_ALL pt_BR.UTF-8
 ENV DISPLAY=:0
 ENV XAUTHORITY=/root/.Xauthority
 
-# Comando para executar o script principal (admin_menu.py)
-CMD ["python3", "python/client/admin_menu.py"]
+# Comando para executar o script principal (cashier_menu.py)
+CMD ["python3", "python/client/cashier_menu.py"]
