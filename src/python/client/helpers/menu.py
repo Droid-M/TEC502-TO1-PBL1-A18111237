@@ -1,14 +1,8 @@
 import os
 import sys
 import subprocess
-import locale
 import pytz
 from datetime import datetime
-
-try:
-    locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
-except locale.Error:
-    locale.setlocale(locale.LC_ALL, 'portuguese_brazil')
 
 TRANSLATED_PAYMENT_METHODS = {
     'pix': 'Pix',
@@ -65,7 +59,7 @@ def pause():
     return input("Pressione Enter para continuar...")
 
 def float_to_currency(value):
-    return locale.currency(value, grouping = True, symbol = True)
+    return f'R$ {value:.2f}'.replace('.', ',')
 
 def get_last_registered_purchase(cashier):
     purchases = cashier['registered_purchases']

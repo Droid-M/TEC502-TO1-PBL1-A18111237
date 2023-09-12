@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Nome e tag da imagem Docker
-IMAGE_NAME="meu_projeto_python"
+IMAGE_NAME="supermarket"
 IMAGE_TAG="1.0"
 
 # Verifica se o Docker está instalado
@@ -18,7 +18,7 @@ if [ $? -eq 0 ]; then
     echo "Imagem Docker construída com sucesso: ${IMAGE_NAME}:${IMAGE_TAG}"
 
     # Executa o contêiner a partir da imagem
-    docker run -it "${IMAGE_NAME}:${IMAGE_TAG}"
+    docker run --privileged -it -v /dev/input:/dev/input "${IMAGE_NAME}:${IMAGE_TAG}"
 else
     echo "Erro ao construir a imagem Docker."
     exit 1

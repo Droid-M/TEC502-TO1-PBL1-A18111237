@@ -6,9 +6,7 @@ from helpers import dict
 from helpers import sensor
 from helpers import request as r
 import time
-# from pynput import keyboard
-
-keyboard = {} # FIXME - Restaurar a importação de 'keyboard' e remover esta variável
+import keyboard
 
 HEADERS = {
     'admin-token': file.env("ADMIN_TOKEN"),
@@ -28,9 +26,6 @@ CASHIER_MAJOR_KEYS = [
 ]
 
 STOP_RASPBERRY_SERVER_COMMAND = "STOP_SERVER"
-
-stop_purchases_watch = False
-stop_cashiers_watch = False
 
 def prepare_system():
     configure_raspberry.deploy_raspberry_server()
@@ -71,24 +66,13 @@ def show_purchases_history():
     if (r.is_success(response)):
         menu.render_purchases(response.json().get('data', []))
 
-def stop_watch_purchases_press_key(pressed_key):
-    global stop_purchases_watch
-    try:
-        if pressed_key.char.lower() == 'n':
-            stop_purchases_watch = True
-    except AttributeError:
-        pass
-
 def track_purchases():
-    global stop_purchases_watch
-    keyboard_listener = keyboard.Listener(on_press=stop_watch_purchases_press_key)
     print("\nO processo de monitoramento de compras será iniciado a seguir. Para interrompê-lo, pressione 'N' durante 2 segundos assim que o processo iniciar.\n\n")
     dialog_response = ''
     while dialog_response.upper() != 'Y':
         dialog_response = input("Insira 'Y' para confirmar que as instruções foram lidas corretamente e para dar início ao monitoramento: ")
     showed_purchases = {}
-    keyboard_listener.start()
-    while (not stop_purchases_watch):
+    while not keyboard.is_pressed('n'):
         response = r.get("purchases/history", HEADERS, {}, {'order' : 'asc'}).json()
         purchases = response.get("data")
         for i in purchases:
@@ -103,8 +87,6 @@ def track_purchases():
                 menu.render_purchase(purchase)
             showed_purchases[i] = purchase
         time.sleep(2)
-    keyboard_listener.stop()
-    stop_purchases_watch = False
         
 def register_product():
     bar_codes = sensor.receive_data()
@@ -160,24 +142,13 @@ def disable_sensor():
     print("O procedimento de desativação do sensor de leitura foi cancelado!")
     return False
 
-def stop_watch_cashiers_press_key(pressed_key):
-    global stop_cashiers_watch
-    try:
-        if pressed_key.char.lower() == 'n':
-            stop_cashiers_watch = True
-    except AttributeError:
-        pass
-
 def track_cashiers():
-    global stop_cashiers_watch
-    keyboard_listener = keyboard.Listener(on_press=stop_watch_cashiers_press_key)
     print("\nO processo de monitoramento de caixas será iniciado a seguir. Para interrompê-lo, pressione 'N' durante 2 segundos assim que o processo iniciar.\n\n")
     dialog_response = ''
     while dialog_response.upper() != 'Y':
         dialog_response = input("Insira 'Y' para confirmar que as instruções foram lidas corretamente e para dar início ao monitoramento: ")
     showed_cashiers = {}
-    keyboard_listener.start()
-    while (not stop_cashiers_watch):
+    while not keyboard.is_pressed('n'):
         response = r.get("cashiers", HEADERS, {}, {'order' : 'asc'}).json()
         cashiers = response.get("data")
         for i in cashiers:
@@ -199,5 +170,3 @@ def track_cashiers():
                 menu.render_cashier(cashier)
             showed_cashiers[i] = cashier
         time.sleep(2)
-    keyboard_listener.stop()
-    stop_cashiers_watch = False
