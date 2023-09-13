@@ -132,7 +132,7 @@ Para executar o aplicativo de servidor manualmente na raspberry, siga os seguint
 
 #### **4.2. Endpoints da api REST**
 
-    Todos os endpoints usados na comunicação _REST_ com a API do mercado estão disponível em "https://github.com/Droid-M/TEC502-TP01-18111237-PBL01-API-DO-SUPERMERCADO/tree/insomnia". Todas as rotas foram minuciosamente testadas através do programa _insomnia_. Para aprender a importar projetos do GitHub para o _insomnia_ consulte o link: [https://docs.insomnia.rest/insomnia/git-sync.](https://docs.insomnia.rest/insomnia/git-sync.)
+    Todos os endpoints usados na comunicação _REST_ com a API do mercado estão disponíveis em "https://github.com/Droid-M/TEC502-TP01-18111237-PBL01-API-DO-SUPERMERCADO/tree/insomnia". Todas as rotas foram minuciosamente testadas através do programa _insomnia_. Para aprender a importar projetos do GitHub para o _insomnia_ consulte o link: [https://docs.insomnia.rest/insomnia/git-sync.](https://docs.insomnia.rest/insomnia/git-sync.)
 
 ### **Referências bibliográficas**
 
