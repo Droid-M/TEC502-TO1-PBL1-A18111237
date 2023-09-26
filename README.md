@@ -98,7 +98,7 @@ Para executar o aplicativo de servidor manualmente na raspberry, siga os seguint
 
  O projeto foi planejado considerando que os dispositivos na rede adotariam a distribuição de responsabilidades conforme a **figura 1**, presente logo abaixo.
 
-![Figura 1. Representação dos dispositivos na rede](https://33333.cdn.cke-cs.com/kSW7V9NHUXugvhoQeFaf/images/3ef54d59f8e549fc93f0f9a12f259c4f31dfaad2bdda4743.png)
+![Figura 1. Representação dos dispositivos na rede](https://trello.com/1/cards/64efea8c9a6b57086d7d1aa0/attachments/64efeaaf26b5eb92686d5e9c/previews/64efeab026b5eb92686d5f33/download/ideia_2.png)
 
                                                                                         **Figura 1.** Distribuição de responsabilidades dos dispositivos
 
